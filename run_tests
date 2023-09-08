@@ -10,9 +10,9 @@
 # - starts the test suite witin a VM
 # - stops the VM after the test suite is done
 
-export BOXES=''
-export FILES=''
-export KEEP_RUNNING=''
+BOXES=''
+FILES=''
+KEEP_RUNNING=''
 
 display_help() {
 	echo 'Usage:'
