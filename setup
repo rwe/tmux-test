@@ -2,8 +2,6 @@
 
 # invoke this script from your projects root directory
 
-CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-
 # pass "undo" as a script arg to undo most of the setup actions
 UNDO_SETUP="$1"
 undo() {
