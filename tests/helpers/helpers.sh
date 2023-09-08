@@ -1,3 +1,4 @@
+# shellcheck shell=bash
 # This file is a symlink from 'tmux-test' plugin.
 # You probably don't want to edit it.
 
