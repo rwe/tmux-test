@@ -63,7 +63,7 @@ install_tmux_plugin_under_test_helper() {
 run_tests() {
 	# get all the functions starting with 'test_' and invoke them
 	local test_func
-	for test_func in $(compgen -A function | grep '^test_'); do
+	for test_func in $(compgen -A function -P 'test_'); do
 		"$test_func"
 	done
 	exit_helper
