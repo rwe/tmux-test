@@ -5,7 +5,7 @@
 
 # Global variable that keeps the value of test status (success/fail).
 # Suggested usage is via `fail_helper` and `exit_helper` functions.
-TEST_STATUS="success"
+TEST_STATUS='success'
 
 # PRIVATE FUNCTIONS
 
@@ -39,17 +39,17 @@ set_tmux_conf_helper() {
 fail_helper() {
 	local message="$1"
 	echo "$message" >&2
-	TEST_STATUS="fail"
+	TEST_STATUS='fail'
 }
 
 exit_helper() {
 	teardown_helper
-	if [[ "$TEST_STATUS" == "fail" ]]; then
-		echo "FAIL!"
+	if [[ "$TEST_STATUS" == 'fail' ]]; then
+		echo 'FAIL!'
 		echo
 		exit 1
 	else
-		echo "SUCCESS"
+		echo 'SUCCESS'
 		echo
 		exit 0
 	fi
@@ -62,7 +62,7 @@ install_tmux_plugin_under_test_helper() {
 
 run_tests() {
 	# get all the functions starting with 'test_' and invoke them
-	for test in $(compgen -A function | grep "^test_"); do
+	for test in $(compgen -A function | grep '^test_'); do
 		"$test"
 	done
 	exit_helper

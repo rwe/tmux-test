@@ -11,7 +11,7 @@ main() {
 	lib/tmux-test/setup
 	./run_tests
 	local exit_value=$?
-	lib/tmux-test/setup "undo"
+	lib/tmux-test/setup 'undo'
 	exit "$exit_value"
 }
 main

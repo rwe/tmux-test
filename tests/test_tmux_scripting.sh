@@ -7,7 +7,7 @@ source "$CURRENT_DIR/helpers/helpers.sh"
 number_of_windows() {
 	tmux list-windows |
 		wc -l |
-		sed "s/ //g"
+		sed 's/ //g'
 }
 
 main() {

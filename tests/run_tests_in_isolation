@@ -13,7 +13,7 @@ EXIT_VALUE=0 # running a test suite is successful by default
 
 all_test_files() {
 	ls -1 "$CURRENT_DIR" |   # test files are in the current dir
-		\grep -i "^test" |   # test file names start with "test"
+		\grep -i '^test' |   # test file names start with "test"
 		xargs                # file names in a single line
 }
 

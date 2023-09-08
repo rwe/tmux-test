@@ -23,25 +23,24 @@ gitignore() {
 
 remove_from_gitignore() {
 	local file="$1"
-	local escaped_filename
-	escaped_filename="$(echo "$file" | sed "s,/,\\\/,g")"
-	sed -i"" "/^${escaped_filename}$/d" .gitignore
+	local escaped_filename="$(echo "$file" | sed 's,/,\\/,g')"
+	sed -i "/^${escaped_filename}$/d" .gitignore
 }
 
 add_files_to_gitignore() {
 	if ! undo; then
-		gitignore "run_tests"
-		gitignore "tests/run_tests_in_isolation"
-		gitignore "tests/helpers/helpers.sh"
+		gitignore 'run_tests'
+		gitignore 'tests/run_tests_in_isolation'
+		gitignore 'tests/helpers/helpers.sh'
 	else
-		remove_from_gitignore "run_tests"
-		remove_from_gitignore "tests/run_tests_in_isolation"
-		remove_from_gitignore "tests/helpers/helpers.sh"
+		remove_from_gitignore 'run_tests'
+		remove_from_gitignore 'tests/run_tests_in_isolation'
+		remove_from_gitignore 'tests/helpers/helpers.sh'
 	fi
 }
 
 symlink_user_test_runner() {
-	local file="run_tests"
+	local file='run_tests'
 	if ! undo; then
 		ln -sf "lib/tmux-test/${file}" "$file"
 	else
@@ -56,7 +55,7 @@ create_directory_for_tests() {
 }
 
 symlink_internal_test_runner() {
-	local file="tests/run_tests_in_isolation"
+	local file='tests/run_tests_in_isolation'
 	if ! undo; then
 		ln -sf "../lib/tmux-test/${file}" "$file"
 	else
@@ -65,7 +64,7 @@ symlink_internal_test_runner() {
 }
 
 symlink_test_helpers() {
-	local file="tests/helpers/helpers.sh"
+	local file='tests/helpers/helpers.sh'
 	if ! undo; then
 		ln -sf "../../lib/tmux-test/${file}" "$file"
 	else
@@ -74,7 +73,7 @@ symlink_test_helpers() {
 }
 
 copy_travis_yml() {
-	local file=".travis.yml"
+	local file='.travis.yml'
 	if ! undo; then
 		cp "lib/tmux-test/${file}" "$file"
 	else
