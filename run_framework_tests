@@ -7,11 +7,11 @@
 # undone after.
 
 main() {
+	local status=0
 	git clone https://github.com/tmux-plugins/tmux-test lib/tmux-test
 	lib/tmux-test/setup
-	./run_tests
-	local exit_value=$?
+	./run_tests || status=$?
 	lib/tmux-test/setup 'undo'
-	exit "$exit_value"
+	return "$status"
 }
 main

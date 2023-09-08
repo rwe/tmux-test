@@ -44,11 +44,11 @@ exit_helper() {
 	if [[ "$TEST_STATUS" == 'fail' ]]; then
 		echo 'FAIL!'
 		echo
-		exit 1
+		return 1
 	else
 		echo 'SUCCESS'
 		echo
-		exit 0
+		return 0
 	fi
 }
 

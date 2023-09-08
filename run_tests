@@ -14,9 +14,6 @@ export BOXES=''
 export FILES=''
 export KEEP_RUNNING=''
 
-# global variable for script exit value
-export EXIT_VALUE=0
-
 display_help() {
 	echo 'Usage:'
 	echo '  ./run_tests                      # runs tests on default VM ubuntu'
@@ -79,10 +76,6 @@ parse_arguments() {
 	fi
 }
 
-register_failing_tests() {
-	EXIT_VALUE=1
-}
-
 run_vagrant() {
 	local box="$1"
 	VAGRANT_CWD=lib/tmux-test/ vagrant up "$box"
@@ -119,27 +112,27 @@ exit_message() {
 }
 
 run_tests_on_vm() {
-	local vm="$1"
+	local vm="$1" status=0
 	run_vagrant "$vm"
-	run_tests "$vm"
-	local tests_exit_value="$?"
+	run_tests "$vm" || status=$?
 	stop_vagrant "$vm"
-	if [[ "$tests_exit_value" -gt 0 ]]; then
-		register_failing_tests
-	fi
+	return $status
 }
 
 run_tests_on_virtual_machines() {
-	local box
+	local box status=0
 	for box in $BOXES; do
-		run_tests_on_vm "$box"
+		run_tests_on_vm "$box" || status=$?
 	done
+	return $status
 }
 
 main() {
 	parse_arguments "$@"
-	run_tests_on_virtual_machines
-	exit_message "$EXIT_VALUE"
-	exit "$EXIT_VALUE"
+
+	local status=0
+	run_tests_on_virtual_machines || status=$?
+	exit_message $status
+	return $status
 }
 main "$@"
