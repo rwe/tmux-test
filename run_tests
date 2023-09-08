@@ -19,7 +19,7 @@ export EXIT_VALUE=0
 
 display_help() {
 	echo "Usage:"
-    echo "  ./run_tests                      # runs tests on default VM ubuntu"
+	echo "  ./run_tests                      # runs tests on default VM ubuntu"
 	echo "  ./run_tests -m ubuntu            # runs tests on ubuntu VM"
 	echo "  ./run_tests -m ubuntu -m centos  # runs tests on ubuntu and cents VMs"
 	echo "  ./run_tests tests/some_test      # run a single test file"
