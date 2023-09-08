@@ -24,8 +24,7 @@ display_help() {
 }
 
 parse_arguments() {
-	while :
-	do
+	while [[ $# -gt 0 ]]; do
 		case "$1" in
 		-m | --machine)
 			local machine="$2"
