@@ -74,7 +74,7 @@ parse_arguments() {
 	done
 
 	# default options
-	if [ -z "$BOXES" ]; then
+	if [[ -z "$BOXES" ]]; then
 		BOXES="ubuntu"
 	fi
 }
@@ -92,7 +92,7 @@ run_vagrant() {
 # option is given
 stop_vagrant() {
 	local box="$1"
-	if [ -z "$KEEP_RUNNING" ]; then
+	if [[ -z "$KEEP_RUNNING" ]]; then
 		VAGRANT_CWD=lib/tmux-test/ vagrant halt "$box"
 	else
 		echo
@@ -124,7 +124,7 @@ run_tests_on_vm() {
 	run_tests "$vm"
 	local tests_exit_value="$?"
 	stop_vagrant "$vm"
-	if [ "$tests_exit_value" -gt 0 ]; then
+	if [[ "$tests_exit_value" -gt 0 ]]; then
 		register_failing_tests
 	fi
 }

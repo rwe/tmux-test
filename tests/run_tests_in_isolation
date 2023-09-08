@@ -23,7 +23,7 @@ set_exit_val_to_false() {
 
 run_tests() {
 	local test_file tests_files
-	if [ "$#" -gt 0 ]; then
+	if [[ "$#" -gt 0 ]]; then
 		test_files="${@//tests\//}" # remove 'tests/' directory prefix
 	else
 		test_files="$(all_test_files)"
@@ -34,7 +34,7 @@ run_tests() {
 
 		# handling exit value
 		local test_exit_value="$?"
-		if [ "$test_exit_value" -ne 0 ]; then
+		if [[ "$test_exit_value" -ne 0 ]]; then
 			set_exit_val_to_false
 		fi
 	done
