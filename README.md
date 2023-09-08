@@ -59,7 +59,7 @@ Now that you installed `tmux-test` let's create an example test.
 - create a `tests/test_example.sh` file with the following content (it's a
   `bash` script but it can be any executable):
 
-        #/usr/bin/env bash
+        #!/usr/bin/env bash
 
         CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
