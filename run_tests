@@ -10,9 +10,9 @@
 # - starts the test suite witin a VM
 # - stops the VM after the test suite is done
 
-BOXES=''
-FILES=''
-KEEP_RUNNING=''
+BOXES=()
+FILES=()
+KEEP_RUNNING=
 
 display_help() {
 	echo 'Usage:'
@@ -29,7 +29,7 @@ parse_arguments() {
 		-m | --machine)
 			local machine="$2"
 			if [[ "$machine" == 'ubuntu' || "$machine" == 'centos' ]]; then
-				BOXES="$BOXES $machine"
+				BOXES+=("$machine")
 			else
 				echo "Unknown machine '$machine'"
 				echo
@@ -51,7 +51,7 @@ parse_arguments() {
 
 		--) # End of all options
 			shift
-			FILES="$*"
+			FILES=("$@")
 			break
 			;;
 
@@ -63,15 +63,15 @@ parse_arguments() {
 			;;
 
 		*)  # No more options
-			FILES="$*"
+			FILES=("$@")
 			break
 			;;
 		esac
 	done
 
 	# default options
-	if [[ -z "$BOXES" ]]; then
-		BOXES='ubuntu'
+	if [[ "${#BOXES[@]}" -eq 0 ]]; then
+		BOXES=(ubuntu)
 	fi
 }
 
@@ -97,7 +97,7 @@ run_tests() {
 	local test_file='/vagrant/tests/run_tests_in_isolation'
 	echo "Running test suite on $box from: $test_file"
 	echo
-	VAGRANT_CWD=lib/tmux-test/ vagrant ssh "$box" -c "cd /vagrant; $test_file $FILES"
+	VAGRANT_CWD=lib/tmux-test/ vagrant ssh "$box" -c "cd /vagrant; $test_file ${FILES[*]}"
 }
 
 exit_message() {
@@ -120,7 +120,7 @@ run_tests_on_vm() {
 
 run_tests_on_virtual_machines() {
 	local box status=0
-	for box in $BOXES; do
+	for box in "${BOXES[@]}"; do
 		run_tests_on_vm "$box" || status=$?
 	done
 	return $status
