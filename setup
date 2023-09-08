@@ -16,15 +16,31 @@ restore() {
 	git checkout -- "$file" 2>/dev/null
 }
 
+has-line() {
+	grep -q --fixed-strings --line-regexp "$1"
+}
+
+not-line() {
+	grep -v --fixed-strings --line-regexp "$1"
+}
+
+add-line() {
+	local line="$1" file="$2"
+	has-line "$line" < "$file" || printf '%s\n' "$line" >> "$file"
+}
+
+remove-line() {
+	local line="$1" file="$2" filtered
+	filtered="$(not-line "$line" < "$file")"
+	printf '%s\n' "$filtered" > "$file"
+}
+
 gitignore() {
-	local file="$1"
-	grep -q "^${file}$" .gitignore 2>/dev/null || echo "$file" >> .gitignore
+	add-line "$1" .gitignore
 }
 
 remove_from_gitignore() {
-	local file="$1"
-	local escaped_filename="$(echo "$file" | sed 's,/,\\/,g')"
-	sed -i "/^${escaped_filename}$/d" .gitignore
+	remove-line "$1" .gitignore
 }
 
 add_files_to_gitignore() {
