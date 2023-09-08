@@ -44,7 +44,7 @@ fail_helper() {
 
 exit_helper() {
 	teardown_helper
-	if [ "$TEST_STATUS" == "fail" ]; then
+	if [[ "$TEST_STATUS" == "fail" ]]; then
 		echo "FAIL!"
 		echo
 		exit 1

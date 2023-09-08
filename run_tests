@@ -32,7 +32,7 @@ parse_arguments() {
 		case "$1" in
 		-m | --machine)
 			local machine="$2"
-			if [ "$machine" == "ubuntu" ] || [ "$machine" == "centos" ]; then
+			if [[ "$machine" == "ubuntu" || "$machine" == "centos" ]]; then
 				BOXES="$BOXES $machine"
 			else
 				echo "Unknown machine '$machine'"
@@ -111,7 +111,7 @@ run_tests() {
 exit_message() {
 	local exit_val="$1"
 	echo
-	if [ "$exit_val" == 0 ]; then
+	if [[ "$exit_val" -eq 0 ]]; then
 		echo "Success, tests pass!"
 	else
 		echo "Tests failed!" 1>&2
