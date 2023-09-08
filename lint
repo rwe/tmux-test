@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+# Any file with a hash comment and "sh" somewhere, except markdown and hidden files.
+git grep -lz '#.*sh' -- ':!*.md' ':!/.*' | xargs -o0 shellcheck
