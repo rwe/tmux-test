@@ -22,7 +22,7 @@ set_exit_val_to_false() {
 }
 
 run_tests() {
-	local test_file tests_files
+	local test_file test_files
 	if [[ "$#" -gt 0 ]]; then
 		test_files="${@//tests\//}" # remove 'tests/' directory prefix
 	else
