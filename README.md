@@ -58,7 +58,7 @@ Now that you installed `tmux-test` let's create an example test.
 
 - create a `tests/test_example.sh` file with the following content (it's a
   `bash` script but it can be any executable):
-
+        ```bash
         #!/usr/bin/env bash
 
         CURRENT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
@@ -83,6 +83,7 @@ Now that you installed `tmux-test` let's create an example test.
 
         # sets the right script exit code ('tmux-test' helper)
         exit_helper
+        ```
 
 - make the test file executable with `$ chmod +x tests/test_example.sh`
 - run the test by executing `./run_tests` from the project root directory
