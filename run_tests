@@ -10,10 +10,6 @@
 # - starts the test suite witin a VM
 # - stops the VM after the test suite is done
 
-BOXES=()
-FILES=()
-KEEP_RUNNING=
-
 # This file after resolving symlinks, e.g. "${PWD}/lib/tmux-test/run_tests"
 SCRIPT="$(realpath "${BASH_SOURCE[0]}")"
 
@@ -84,34 +80,36 @@ run_tests_on_vm() {
 }
 
 main() {
+	local boxes=() files=() keep_running=''
+
 	while [[ $# -gt 0 ]]; do
 		case "$1" in
 		-m | --machine)
 			local machine="$2"
 			if [[ "$machine" == 'ubuntu' || "$machine" == 'centos' ]]; then
-				BOXES+=("$machine")
+				boxes+=("$machine")
 			else
 				echo "Unknown machine '$machine'"
 				echo
 				display_help
-				exit 1
+				return 1
 			fi
 			shift 2
 			;;
 
 		-k | --keep-running)
-			KEEP_RUNNING='true'
+			keep_running='true'
 			shift
 			;;
 
 		-h | --help)
 			display_help
-			exit 0
+			return 0
 			;;
 
 		--) # End of all options
 			shift
-			FILES=("$@")
+			files=("$@")
 			break
 			;;
 
@@ -119,24 +117,24 @@ main() {
 			echo "Error: Unknown option: $1" >&2
 			echo
 			display_help
-			exit 1
+			return 1
 			;;
 
 		*)  # No more options
-			FILES=("$@")
+			files=("$@")
 			break
 			;;
 		esac
 	done
 
 	# default options
-	if [[ "${#BOXES[@]}" -eq 0 ]]; then
-		BOXES=(ubuntu)
+	if [[ "${#boxes[@]}" -eq 0 ]]; then
+		boxes=(ubuntu)
 	fi
 
 	local box status=0
-	for box in "${BOXES[@]}"; do
-		run_tests_on_vm "$box" "$KEEP_RUNNING" "${FILES[@]}" || status=$?
+	for box in "${boxes[@]}"; do
+		run_tests_on_vm "$box" "$keep_running" "${files[@]}" || status=$?
 	done
 
 	exit_message $status
