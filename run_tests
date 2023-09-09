@@ -96,12 +96,7 @@ run_vagrant() {
 # option is given
 stop_vagrant() {
 	local box="$1"
-	if [[ -z "$KEEP_RUNNING" ]]; then
-		vagrant halt "$box"
-	else
-		echo
-		echo '--keep-running option set, Vagrant not halted'
-	fi
+	vagrant halt "$box"
 }
 
 run_tests() {
@@ -131,7 +126,12 @@ run_tests_on_vm() {
 	local box="$1" status=0
 	run_vagrant "$box"
 	run_tests "$box" "${FILES[@]}" || status=$?
-	stop_vagrant "$box"
+	if [[ -z "$KEEP_RUNNING" ]]; then
+		stop_vagrant "$box"
+	else
+		echo
+		echo '--keep-running option set, Vagrant not halted'
+	fi
 	return $status
 }
 
