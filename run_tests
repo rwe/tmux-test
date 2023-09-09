@@ -135,19 +135,14 @@ run_tests_on_vm() {
 	return $status
 }
 
-run_tests_on_virtual_machines() {
+main() {
+	parse_arguments "$@"
+
 	local box status=0
 	for box in "${BOXES[@]}"; do
 		run_tests_on_vm "$box" "$KEEP_RUNNING" "${FILES[@]}" || status=$?
 	done
-	return $status
-}
 
-main() {
-	parse_arguments "$@"
-
-	local status=0
-	run_tests_on_virtual_machines || status=$?
 	exit_message $status
 	return $status
 }
