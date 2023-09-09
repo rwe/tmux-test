@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -Eeu -o pipefail
 
 sudo apt-get update
 sudo apt-get install -y git-core expect vim

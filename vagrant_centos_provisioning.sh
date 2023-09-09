@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -Eeu -o pipefail
 
 # libevent2 installation instructions from here
 # https://gist.github.com/rschuman/6168833

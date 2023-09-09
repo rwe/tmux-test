@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -Eeu -o pipefail
 
 # This file is a symlink from 'tmux-test' plugin.
 # You probably don't want to edit it.
