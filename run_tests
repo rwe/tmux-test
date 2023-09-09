@@ -128,10 +128,10 @@ exit_message() {
 }
 
 run_tests_on_vm() {
-	local vm="$1" status=0
-	run_vagrant "$vm"
-	run_tests "$vm" || status=$?
-	stop_vagrant "$vm"
+	local box="$1" status=0
+	run_vagrant "$box"
+	run_tests "$box" || status=$?
+	stop_vagrant "$box"
 	return $status
 }
 
