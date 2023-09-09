@@ -20,6 +20,12 @@ SCRIPT="$(realpath "${BASH_SOURCE[0]}")"
 VAGRANT_CWD="$(dirname "${SCRIPT}")/"
 export VAGRANT_CWD
 
+# Shell-quote the arguments as individaul words.
+sh:() {
+	[[ $# -lt 1 ]] || printf '%q' "$1"
+	[[ $# -lt 2 ]] || printf ' %q' "${@:2}"
+}
+
 display_help() {
 	echo 'Usage:'
 	echo '  ./run_tests                      # runs tests on default VM ubuntu'
@@ -101,9 +107,14 @@ stop_vagrant() {
 run_tests() {
 	local box="$1"
 	local test_file='/vagrant/tests/run_tests_in_isolation'
+
+	local cd_cmd test_cmd
+	cd_cmd="$(sh: cd /vagrant)"
+	test_cmd="$(sh: "$test_file" "${FILES[@]}")"
+
 	echo "Running test suite on $box from: $test_file"
 	echo
-	vagrant ssh "$box" -c "cd /vagrant && $test_file ${FILES[*]}"
+	vagrant ssh "$box" -c "${cd_cmd} && ${test_cmd}"
 }
 
 exit_message() {
