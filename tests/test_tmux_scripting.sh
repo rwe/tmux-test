@@ -18,8 +18,9 @@ main() {
 	local number_of_windows
 	number_of_windows="$(number_of_windows)"
 	if [[ "$number_of_windows" -ne 2 ]]; then
-		fail_helper "Incorrect number of windows. Expected 2, got $number_of_windows"
+		test:fail "Incorrect number of windows. Expected 2, got $number_of_windows"
+	else
+		test:ok
 	fi
-	exit_helper
 }
 main
