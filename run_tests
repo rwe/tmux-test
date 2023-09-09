@@ -35,58 +35,6 @@ display_help() {
 	echo '  ./run_tests --keep-running       # don'\''t stop vagrant after the tests are done'
 }
 
-parse_arguments() {
-	while [[ $# -gt 0 ]]; do
-		case "$1" in
-		-m | --machine)
-			local machine="$2"
-			if [[ "$machine" == 'ubuntu' || "$machine" == 'centos' ]]; then
-				BOXES+=("$machine")
-			else
-				echo "Unknown machine '$machine'"
-				echo
-				display_help
-				exit 1
-			fi
-			shift 2
-			;;
-
-		-k | --keep-running)
-			KEEP_RUNNING='true'
-			shift
-			;;
-
-		-h | --help)
-			display_help
-			exit 0
-			;;
-
-		--) # End of all options
-			shift
-			FILES=("$@")
-			break
-			;;
-
-		-* )
-			echo "Error: Unknown option: $1" >&2
-			echo
-			display_help
-			exit 1
-			;;
-
-		*)  # No more options
-			FILES=("$@")
-			break
-			;;
-		esac
-	done
-
-	# default options
-	if [[ "${#BOXES[@]}" -eq 0 ]]; then
-		BOXES=(ubuntu)
-	fi
-}
-
 run_vagrant() {
 	local box="$1"
 	vagrant up "$box"
@@ -136,7 +84,55 @@ run_tests_on_vm() {
 }
 
 main() {
-	parse_arguments "$@"
+	while [[ $# -gt 0 ]]; do
+		case "$1" in
+		-m | --machine)
+			local machine="$2"
+			if [[ "$machine" == 'ubuntu' || "$machine" == 'centos' ]]; then
+				BOXES+=("$machine")
+			else
+				echo "Unknown machine '$machine'"
+				echo
+				display_help
+				exit 1
+			fi
+			shift 2
+			;;
+
+		-k | --keep-running)
+			KEEP_RUNNING='true'
+			shift
+			;;
+
+		-h | --help)
+			display_help
+			exit 0
+			;;
+
+		--) # End of all options
+			shift
+			FILES=("$@")
+			break
+			;;
+
+		-* )
+			echo "Error: Unknown option: $1" >&2
+			echo
+			display_help
+			exit 1
+			;;
+
+		*)  # No more options
+			FILES=("$@")
+			break
+			;;
+		esac
+	done
+
+	# default options
+	if [[ "${#BOXES[@]}" -eq 0 ]]; then
+		BOXES=(ubuntu)
+	fi
 
 	local box status=0
 	for box in "${BOXES[@]}"; do
