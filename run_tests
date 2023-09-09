@@ -105,12 +105,12 @@ stop_vagrant() {
 }
 
 run_tests() {
-	local box="$1"
+	local box="$1" test_files=("${@:2}")
 	local test_dir='/vagrant' test_runner='tests/run_tests_in_isolation'
 
 	local cd_cmd test_cmd
 	cd_cmd="$(sh: cd "$test_dir")"
-	test_cmd="$(sh: "$test_runner" "${FILES[@]}")"
+	test_cmd="$(sh: "$test_runner" "${test_files[@]}")"
 
 	echo "Running test suite on $box from: ${test_dir}/${test_runner}"
 	echo
@@ -130,7 +130,7 @@ exit_message() {
 run_tests_on_vm() {
 	local box="$1" status=0
 	run_vagrant "$box"
-	run_tests "$box" || status=$?
+	run_tests "$box" "${FILES[@]}" || status=$?
 	stop_vagrant "$box"
 	return $status
 }
