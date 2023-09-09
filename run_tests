@@ -106,13 +106,13 @@ stop_vagrant() {
 
 run_tests() {
 	local box="$1"
-	local test_file='/vagrant/tests/run_tests_in_isolation'
+	local test_dir='/vagrant' test_runner='tests/run_tests_in_isolation'
 
 	local cd_cmd test_cmd
-	cd_cmd="$(sh: cd /vagrant)"
-	test_cmd="$(sh: "$test_file" "${FILES[@]}")"
+	cd_cmd="$(sh: cd "$test_dir")"
+	test_cmd="$(sh: "$test_runner" "${FILES[@]}")"
 
-	echo "Running test suite on $box from: $test_file"
+	echo "Running test suite on $box from: ${test_dir}/${test_runner}"
 	echo
 	vagrant ssh "$box" -c "${cd_cmd} && ${test_cmd}"
 }
