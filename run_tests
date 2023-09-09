@@ -123,10 +123,10 @@ exit_message() {
 }
 
 run_tests_on_vm() {
-	local box="$1" status=0
+	local box="$1" keep_running="$2" files=("${@:3}") status=0
 	run_vagrant "$box"
-	run_tests "$box" "${FILES[@]}" || status=$?
-	if [[ -z "$KEEP_RUNNING" ]]; then
+	run_tests "$box" "${files[@]}" || status=$?
+	if [[ -z "$keep_running" ]]; then
 		stop_vagrant "$box"
 	else
 		echo
@@ -138,7 +138,7 @@ run_tests_on_vm() {
 run_tests_on_virtual_machines() {
 	local box status=0
 	for box in "${BOXES[@]}"; do
-		run_tests_on_vm "$box" || status=$?
+		run_tests_on_vm "$box" "$KEEP_RUNNING" "${FILES[@]}" || status=$?
 	done
 	return $status
 }
